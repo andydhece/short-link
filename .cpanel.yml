@@ -2,7 +2,7 @@
 deployment:
   tasks:
     # Set deployment path (adjust if deploying to a subdomain or subdirectory)
-    - export DEPLOYPATH=/home/dhece086/public_html
+    - export DEPLOYPATH=/home/dhece086/public_html/dinaskom.info
     
     # Sync repository files to the deployment path, excluding files not needed in production hosting
     - /bin/rsync -rav --exclude '.git' --exclude '.gitignore' --exclude '.env*' --exclude 'Dockerfile' --exclude 'docker-compose.yml' --exclude 'db' --exclude 'dc' * $DEPLOYPATH
