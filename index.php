@@ -44,12 +44,10 @@ if ($path === '/' && $_SERVER['REQUEST_METHOD'] === 'GET') {
     exit;
 }
 
+// /register route dinonaktifkan — akun dibuat oleh admin
 if ($path === '/register' && $_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (isset($_SESSION['userId'])) {
-        header('Location: ' . $config['base_url'] . '/dashboard');
-        exit;
-    }
-    readfile(__DIR__ . '/views/register.html');
+    http_response_code(404);
+    readfile(__DIR__ . '/views/404.html');
     exit;
 }
 
@@ -98,49 +96,11 @@ if ($path === '/login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
+// POST /register dinonaktifkan — akun dibuat oleh admin melalui panel
 if ($path === '/register' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    header('HTTP/1.1 403 Forbidden');
     header('Content-Type: application/json');
-    $input = json_decode(file_get_contents('php://input'), true);
-    $username = isset($input['username']) ? trim(strtolower($input['username'])) : '';
-    $password = isset($input['password']) ? $input['password'] : '';
-
-    if (empty($username) || empty($password)) {
-        header('HTTP/1.1 400 Bad Request');
-        echo json_encode(['error' => 'Username dan password wajib diisi.']);
-        exit;
-    }
-
-    $cleanUsername = preg_replace('/[^a-z0-9\_]/', '', $username);
-    if (empty($cleanUsername) || strlen($cleanUsername) < 3) {
-        header('HTTP/1.1 400 Bad Request');
-        echo json_encode(['error' => 'Username minimal 3 karakter alfanumerik/underscore.']);
-        exit;
-    }
-
-    if (strlen($password) < 6) {
-        header('HTTP/1.1 400 Bad Request');
-        echo json_encode(['error' => 'Password minimal 6 karakter.']);
-        exit;
-    }
-
-    $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ?");
-    $stmt->execute([$cleanUsername]);
-    if ($stmt->fetch()) {
-        header('HTTP/1.1 400 Bad Request');
-        echo json_encode(['error' => 'Username sudah digunakan.']);
-        exit;
-    }
-
-    $hashedPass = password_hash($password, PASSWORD_BCRYPT);
-    $stmt = $pdo->prepare("INSERT INTO users (username, password_hash, role) VALUES (?, ?, 'user')");
-    $stmt->execute([$cleanUsername, $hashedPass]);
-    $userId = $pdo->lastInsertId();
-
-    $_SESSION['userId'] = $userId;
-    $_SESSION['username'] = $cleanUsername;
-    $_SESSION['role'] = 'user';
-
-    echo json_encode(['success' => true]);
+    echo json_encode(['error' => 'Pendaftaran mandiri dinonaktifkan. Hubungi admin.']);
     exit;
 }
 
