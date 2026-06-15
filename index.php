@@ -230,6 +230,67 @@ if ($path === '/api/shorten' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
+if (preg_match('#^/api/links/(\d+)$#', $path, $matches) && $_SERVER['REQUEST_METHOD'] === 'PUT') {
+    requireAuth();
+    header('Content-Type: application/json');
+    $linkId = $matches[1];
+
+    $input = json_decode(file_get_contents('php://input'), true);
+    $url = isset($input['url']) ? trim($input['url']) : '';
+    $slug = isset($input['slug']) ? trim(strtolower($input['slug'])) : '';
+    $title = isset($input['title']) ? trim($input['title']) : '';
+
+    if (empty($url) || empty($slug)) {
+        header('HTTP/1.1 400 Bad Request');
+        echo json_encode(['error' => 'URL dan Keyword/Slug wajib diisi.']);
+        exit;
+    }
+
+    if (!preg_match('/^https?:\/\//i', $url)) {
+        $url = 'http://' . $url;
+    }
+
+    $slug = preg_replace('/[^a-z0-9\-]/', '', $slug);
+    if (empty($slug)) {
+        header('HTTP/1.1 400 Bad Request');
+        echo json_encode(['error' => 'Format keyword tidak valid.']);
+        exit;
+    }
+
+    $stmt = $pdo->prepare("SELECT * FROM links WHERE id = ?");
+    $stmt->execute([$linkId]);
+    $link = $stmt->fetch();
+    if (!$link) {
+        header('HTTP/1.1 404 Not Found');
+        echo json_encode(['error' => 'Link tidak ditemukan.']);
+        exit;
+    }
+
+    if ($_SESSION['role'] !== 'admin' && $link['user_id'] != $_SESSION['userId']) {
+        header('HTTP/1.1 403 Forbidden');
+        echo json_encode(['error' => 'Akses ditolak.']);
+        exit;
+    }
+
+    $stmt = $pdo->prepare("SELECT id FROM links WHERE slug = ? AND id != ?");
+    $stmt->execute([$slug, $linkId]);
+    if ($stmt->fetch()) {
+        header('HTTP/1.1 400 Bad Request');
+        echo json_encode(['error' => 'Keyword/Slug ini sudah digunakan oleh tautan lain.']);
+        exit;
+    }
+
+    if (empty($title)) {
+        $title = $url;
+    }
+
+    $stmt = $pdo->prepare("UPDATE links SET slug = ?, url = ?, title = ? WHERE id = ?");
+    $stmt->execute([$slug, $url, $title, $linkId]);
+
+    echo json_encode(['success' => true]);
+    exit;
+}
+
 if (preg_match('#^/api/links/(\d+)$#', $path, $matches) && $_SERVER['REQUEST_METHOD'] === 'DELETE') {
     requireAuth();
     header('Content-Type: application/json');
