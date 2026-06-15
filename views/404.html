@@ -6,7 +6,7 @@
     <title>404 - Tautan Tidak Ditemukan</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -14,31 +14,46 @@
                 extend: {
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
+                        heading: ['Plus Jakarta Sans', 'sans-serif'],
                     },
                 },
             },
         }
     </script>
     <style>
-        .glass {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(226, 232, 240, 0.8);
+        .glass-card {
+            background: rgba(15, 20, 35, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        }
+        .glowing-glow {
+            filter: blur(120px);
+            opacity: 0.6;
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-900 to-slate-800 min-h-screen flex items-center justify-center p-4">
-    <div class="glass w-full max-w-md rounded-2xl shadow-2xl p-8 text-center transition-all duration-300">
-        <div class="text-red-500 font-extrabold text-7xl mb-4 animate-bounce">
-            404
+<body class="bg-[#070913] text-slate-100 min-h-screen flex items-center justify-center p-4 relative overflow-hidden font-sans select-none">
+    <!-- Background Light Effects -->
+    <div class="absolute top-[-20%] left-[-20%] w-[60%] h-[60%] rounded-full bg-gradient-to-br from-indigo-600 to-purple-600/0 glowing-glow pointer-events-none"></div>
+    <div class="absolute bottom-[-20%] right-[-20%] w-[60%] h-[60%] rounded-full bg-gradient-to-br from-cyan-600 to-indigo-600/0 glowing-glow pointer-events-none"></div>
+
+    <div class="glass-card w-full max-w-md rounded-3xl p-8 md:p-10 text-center transition-all duration-300 relative z-10 hover:border-slate-700/40">
+        <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-red-500/10 border border-red-500/20 text-red-500 mb-6 shadow-lg shadow-red-500/5">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+            </svg>
         </div>
-        <h1 class="text-2xl font-bold text-slate-850">Tautan Tidak Aktif</h1>
-        <p class="text-sm text-slate-500 mt-2 mb-6">
-            Maaf, tautan pendek yang Anda tuju salah atau tidak terdaftar di sistem kami.
+        <h1 class="text-4xl font-extrabold font-heading text-white bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+            404
+        </h1>
+        <h2 class="text-xl font-bold text-slate-200 mt-2">Tautan Tidak Aktif</h2>
+        <p class="text-sm text-slate-400 mt-3 mb-8 leading-relaxed">
+            Maaf, tautan pendek yang Anda tuju salah, telah kadaluwarsa, atau tidak terdaftar di sistem kami.
         </p>
 
         <a href="/" 
-            class="inline-block w-full py-3.5 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition-all outline-none">
+            class="inline-block w-full py-4 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold rounded-2xl shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/35 transition-all duration-300 hover:scale-[1.01] active:scale-[0.99] outline-none">
             Kembali ke Beranda
         </a>
     </div>
