@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Tautan Tidak Ditemukan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 to-slate-800 min-h-screen flex items-center justify-center p-4">
+    <div class="glass w-full max-w-md rounded-2xl shadow-2xl p-8 text-center transition-all duration-300">
+        <div class="text-red-500 font-extrabold text-7xl mb-4 animate-bounce">
+            404
+        </div>
+        <h1 class="text-2xl font-bold text-slate-850">Tautan Tidak Aktif</h1>
+        <p class="text-sm text-slate-500 mt-2 mb-6">
+            Maaf, tautan pendek yang Anda tuju salah atau tidak terdaftar di sistem kami.
+        </p>
+
+        <a href="/" 
+            class="inline-block w-full py-3.5 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition-all outline-none">
+            Kembali ke Beranda
+        </a>
+    </div>
+</body>
+</html>

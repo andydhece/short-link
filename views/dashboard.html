@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Pemendek Tautan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            background-attachment: fixed;
+        }
+        .card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        }
+    </style>
+</head>
+<body class="min-h-screen font-sans text-slate-800 antialiased py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-5xl mx-auto">
+        <!-- Header -->
+        <header class="flex justify-between items-center mb-8 bg-white/80 backdrop-blur-md border border-slate-200/60 rounded-2xl p-6 shadow-sm">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center font-bold text-lg shadow-md shadow-blue-500/20">
+                    L
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-slate-900 leading-tight">ShortLink</h1>
+                    <p class="text-xs text-slate-500 font-medium">Halo, <span id="sess-username" class="font-bold text-slate-700">...</span> (<span id="sess-role" class="text-blue-600 capitalize font-bold">...</span>)</p>
+                </div>
+            </div>
+            <div>
+                <a href="/logout" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm rounded-xl transition-all outline-none">
+                    Keluar
+                </a>
+            </div>
+        </header>
+
+        <!-- Tab Navigation (only visible if Admin) -->
+        <div id="admin-tabs" class="hidden flex gap-4 mb-6 border-b border-slate-200 pb-px">
+            <button onclick="switchTab('links')" id="tab-btn-links" class="pb-3 px-2 border-b-2 border-blue-600 text-blue-600 font-bold text-sm transition-all focus:outline-none">
+                Tautan
+            </button>
+            <button onclick="switchTab('users')" id="tab-btn-users" class="pb-3 px-2 border-b-2 border-transparent text-slate-500 hover:text-slate-700 font-medium text-sm transition-all focus:outline-none">
+                Manajemen User
+            </button>
+        </div>
+
+        <div id="links-section">
+            <!-- Form Add Link -->
+            <section class="card rounded-2xl p-6 mb-8">
+                <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                    Buat Tautan Baru
+                </h2>
+                <form id="shorten-form" class="flex flex-col md:flex-row gap-4 items-end">
+                    <div class="flex-grow w-full">
+                        <label for="url" class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Tautan Panjang (Target URL)</label>
+                        <input type="text" id="url" required placeholder="https://domain-panjang.com/halaman/detail"
+                            class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all text-sm text-slate-800">
+                    </div>
+                    <div class="w-full md:w-64">
+                        <label for="keyword" class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Kata Kunci Kustom (Opsional)</label>
+                        <input type="text" id="keyword" placeholder="slug-kustom"
+                            class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all text-sm text-slate-800">
+                    </div>
+                    <button type="submit" 
+                        class="w-full md:w-auto px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl shadow-lg shadow-blue-500/20 transition-all outline-none whitespace-nowrap">
+                        Perpendek URL
+                    </button>
+                </form>
+                <div id="add-feedback" class="hidden mt-4 p-4 rounded-xl text-sm font-medium"></div>
+            </section>
+
+            <!-- Links Table -->
+            <section class="card rounded-2xl overflow-hidden mb-8">
+                <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+                    <h2 class="text-lg font-bold text-slate-900">Semua Tautan</h2>
+                    <span id="links-count" class="bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-full">0 Tautan</span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-500 text-xs font-bold uppercase tracking-wider border-b border-slate-100">
+                                <th class="py-4 px-6">Tautan Pendek</th>
+                                <th class="py-4 px-6">Tautan Asli</th>
+                                <th class="py-4 px-6">Tanggal Dibuat</th>
+                                <th id="col-creator-header" class="py-4 px-6 hidden">Dibuat Oleh</th>
+                                <th class="py-4 px-6 text-center">Klik</th>
+                                <th class="py-4 px-6 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="links-list" class="divide-y divide-slate-100 text-sm">
+                            <!-- Content dynamically loaded -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- Users Section (Admin Only) -->
+        <div id="users-section" class="hidden space-y-8 mb-8">
+            <!-- Form Add User -->
+            <section class="card rounded-2xl p-6">
+                <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                    Tambah User Baru
+                </h2>
+                <form id="adduser-form" class="flex flex-col md:flex-row gap-4 items-end">
+                    <div class="flex-grow w-full">
+                        <label for="new-username" class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Username</label>
+                        <input type="text" id="new-username" required placeholder="username" minlength="3"
+                            class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all text-sm text-slate-800">
+                    </div>
+                    <div class="flex-grow w-full">
+                        <label for="new-password" class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Password</label>
+                        <input type="password" id="new-password" required placeholder="password" minlength="6"
+                            class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all text-sm text-slate-800">
+                    </div>
+                    <div class="w-full md:w-48">
+                        <label for="new-role" class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Role</label>
+                        <select id="new-role" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all text-sm text-slate-800 bg-white">
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <button type="submit" 
+                        class="w-full md:w-auto px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl shadow-lg shadow-blue-500/20 transition-all outline-none whitespace-nowrap">
+                        Tambah User
+                    </button>
+                </form>
+                <div id="adduser-feedback" class="hidden mt-4 p-4 rounded-xl text-sm font-medium"></div>
+            </section>
+
+            <!-- Users List Table -->
+            <section class="card rounded-2xl overflow-hidden">
+                <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+                    <h2 class="text-lg font-bold text-slate-900">Semua User</h2>
+                    <span id="users-count" class="bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-full">0 User</span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-500 text-xs font-bold uppercase tracking-wider border-b border-slate-100">
+                                <th class="py-4 px-6">ID</th>
+                                <th class="py-4 px-6">Username</th>
+                                <th class="py-4 px-6">Role</th>
+                                <th class="py-4 px-6">Tanggal Terdaftar</th>
+                                <th class="py-4 px-6 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-list" class="divide-y divide-slate-100 text-sm">
+                            <!-- Content dynamically loaded -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Stats Drawer/Modal -->
+    <div id="stats-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 shadow-2xl relative">
+            <button onclick="closeStats()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            
+            <h2 id="modal-title" class="text-xl font-bold text-slate-900 mb-6">Analitik Tautan</h2>
+
+            <!-- Analytics Charts and Tables Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Line Chart -->
+                <div class="md:col-span-2 bg-slate-50 rounded-xl p-4 border border-slate-100">
+                    <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Tren Klik (14 Hari Terakhir)</h3>
+                    <div class="h-64">
+                        <canvas id="clicksChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Referrers Table -->
+                <div class="bg-white border border-slate-200/60 rounded-xl p-4">
+                    <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Top Rujukan (Referrers)</h3>
+                    <ul id="stats-referrers" class="divide-y divide-slate-100 text-sm">
+                        <!-- Loaded dynamically -->
+                    </ul>
+                </div>
+
+                <!-- Countries Table -->
+                <div class="bg-white border border-slate-200/60 rounded-xl p-4">
+                    <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Top Lokasi (Negara)</h3>
+                    <ul id="stats-countries" class="divide-y divide-slate-100 text-sm">
+                        <!-- Loaded dynamically -->
+                    </ul>
+                </div>
+
+                <!-- Browsers Table -->
+                <div class="bg-white border border-slate-200/60 rounded-xl p-4">
+                    <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Top Browser</h3>
+                    <ul id="stats-browsers" class="divide-y divide-slate-100 text-sm">
+                        <!-- Loaded dynamically -->
+                    </ul>
+                </div>
+
+                <!-- OS Table -->
+                <div class="bg-white border border-slate-200/60 rounded-xl p-4">
+                    <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Top Sistem Operasi</h3>
+                    <ul id="stats-os" class="divide-y divide-slate-100 text-sm">
+                        <!-- Loaded dynamically -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let chartInstance = null;
+        let currentSession = null;
+
+        // Fetch session on load
+        async function fetchSession() {
+            try {
+                const res = await fetch('/api/session');
+                const data = await res.json();
+                if (data.loggedIn) {
+                    currentSession = data;
+                    document.getElementById('sess-username').innerText = data.username;
+                    document.getElementById('sess-role').innerText = data.role;
+                    
+                    if (data.role === 'admin') {
+                        document.getElementById('admin-tabs').classList.remove('hidden');
+                        document.getElementById('col-creator-header').classList.remove('hidden');
+                    }
+                } else {
+                    window.location.href = '/';
+                }
+            } catch (err) {
+                console.error('Error checking session:', err);
+            }
+        }
+
+        // Tab Switcher
+        function switchTab(tab) {
+            if (tab === 'links') {
+                document.getElementById('links-section').classList.remove('hidden');
+                document.getElementById('users-section').classList.add('hidden');
+                document.getElementById('tab-btn-links').className = "pb-3 px-2 border-b-2 border-blue-600 text-blue-600 font-bold text-sm transition-all focus:outline-none";
+                document.getElementById('tab-btn-users').className = "pb-3 px-2 border-b-2 border-transparent text-slate-500 hover:text-slate-700 font-medium text-sm transition-all focus:outline-none";
+                loadLinks();
+            } else if (tab === 'users') {
+                document.getElementById('links-section').classList.add('hidden');
+                document.getElementById('users-section').classList.remove('hidden');
+                document.getElementById('tab-btn-links').className = "pb-3 px-2 border-b-2 border-transparent text-slate-500 hover:text-slate-700 font-medium text-sm transition-all focus:outline-none";
+                document.getElementById('tab-btn-users').className = "pb-3 px-2 border-b-2 border-blue-600 text-blue-600 font-bold text-sm transition-all focus:outline-none";
+                loadUsers();
+            }
+        }
+
+        // Fetch and load all links
+        async function loadLinks() {
+            try {
+                const res = await fetch('/api/links');
+                const data = await res.json();
+                
+                const list = document.getElementById('links-list');
+                document.getElementById('links-count').innerText = `${data.links.length} Tautan`;
+                list.innerHTML = '';
+
+                if (data.links.length === 0) {
+                    const colSpan = (currentSession && currentSession.role === 'admin') ? 6 : 5;
+                    list.innerHTML = `<tr><td colspan="${colSpan}" class="py-8 text-center text-slate-400">Belum ada tautan yang dibuat.</td></tr>`;
+                    return;
+                }
+
+                data.links.forEach(link => {
+                    const created = new Date(link.created_at).toLocaleDateString('id-ID', {
+                        day: 'numeric', month: 'short', year: 'numeric'
+                    });
+                    const fullShortUrl = `${window.location.origin}/${link.slug}`;
+
+                    const creatorCell = (currentSession && currentSession.role === 'admin') 
+                        ? `<td class="py-4 px-6 font-semibold text-slate-600">${link.creator || 'default'}</td>` 
+                        : '';
+
+                    list.innerHTML += `
+                        <tr class="hover:bg-slate-50/50">
+                            <td class="py-4 px-6 font-semibold text-blue-600">
+                                <a href="${fullShortUrl}" target="_blank" class="hover:underline">${link.slug}</a>
+                            </td>
+                            <td class="py-4 px-6 text-slate-500 max-w-xs truncate" title="${link.url}">
+                                <div class="font-medium text-slate-800 mb-0.5">${link.title || link.url}</div>
+                                <a href="${link.url}" target="_blank" class="text-xs text-slate-400 hover:underline hover:text-blue-500">${link.url}</a>
+                            </td>
+                            <td class="py-4 px-6 text-slate-500 text-xs">${created}</td>
+                            ${creatorCell}
+                            <td class="py-4 px-6 text-center font-bold text-slate-800">${link.clicks}</td>
+                            <td class="py-4 px-6 text-right">
+                                <div class="inline-flex gap-2">
+                                    <button onclick="copyToClipboard('${fullShortUrl}', this)" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition-all relative">
+                                        Salin
+                                    </button>
+                                    <button onclick="showStats(${link.id}, '${link.slug}')" class="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold rounded-lg transition-all">
+                                        Statistik
+                                    </button>
+                                    <button onclick="deleteLink(${link.id})" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 text-xs font-semibold rounded-lg transition-all">
+                                        Hapus
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (err) {
+                console.error('Error loading links:', err);
+            }
+        }
+
+        // Fetch and load all users (Admin Only)
+        async function loadUsers() {
+            try {
+                const res = await fetch('/api/users');
+                const data = await res.json();
+                
+                const list = document.getElementById('users-list');
+                document.getElementById('users-count').innerText = `${data.users.length} User`;
+                list.innerHTML = '';
+
+                data.users.forEach(user => {
+                    const created = new Date(user.created_at).toLocaleDateString('id-ID', {
+                        day: 'numeric', month: 'short', year: 'numeric'
+                    });
+
+                    const isSelf = user.username === currentSession.username;
+                    const disabledAttr = isSelf ? 'disabled' : '';
+                    const disabledClass = isSelf ? 'opacity-50 cursor-not-allowed bg-slate-100 text-slate-400' : 'bg-white text-slate-800';
+                    const btnClass = isSelf ? 'opacity-30 cursor-not-allowed hover:bg-red-50' : '';
+
+                    list.innerHTML += `
+                        <tr class="hover:bg-slate-50/50">
+                            <td class="py-4 px-6 text-slate-400 font-semibold">${user.id}</td>
+                            <td class="py-4 px-6 font-bold text-slate-800">${user.username} ${isSelf ? '<span class="text-xs text-slate-400 font-medium font-mono">(Anda)</span>' : ''}</td>
+                            <td class="py-4 px-6">
+                                <select onchange="changeUserRole(${user.id}, this.value)" ${disabledAttr} 
+                                    class="px-2 py-1.5 border border-slate-200 rounded-lg text-xs font-semibold outline-none transition-all focus:border-blue-500 ${disabledClass}">
+                                    <option value="user" ${user.role === 'user' ? 'selected' : ''}>User</option>
+                                    <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option>
+                                </select>
+                            </td>
+                            <td class="py-4 px-6 text-slate-500 text-xs">${created}</td>
+                            <td class="py-4 px-6 text-right">
+                                <button onclick="deleteUser(${user.id}, '${user.username}')" ${disabledAttr} 
+                                    class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 text-xs font-semibold rounded-lg transition-all ${btnClass}">
+                                    Hapus
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (err) {
+                console.error('Error loading users:', err);
+            }
+        }
+
+        // Change user role
+        async function changeUserRole(id, role) {
+            try {
+                const res = await fetch(`/api/users/${id}/role`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ role })
+                });
+                if (res.ok) {
+                    loadUsers();
+                } else {
+                    const data = await res.json();
+                    alert(data.error || 'Gagal mengubah role.');
+                    loadUsers();
+                }
+            } catch (err) {
+                alert('Gagal menghubungi server.');
+                loadUsers();
+            }
+        }
+
+        // Delete user
+        async function deleteUser(id, username) {
+            if (!confirm(`Apakah Anda yakin ingin menghapus user "${username}"? Semua link buatan user ini tetap ada dengan status creator default.`)) return;
+            try {
+                const res = await fetch(`/api/users/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    loadUsers();
+                } else {
+                    const data = await res.json();
+                    alert(data.error || 'Gagal menghapus user.');
+                }
+            } catch (err) {
+                alert('Gagal menghubungi server.');
+            }
+        }
+
+        // Add user submit handler
+        document.getElementById('adduser-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('new-username').value;
+            const password = document.getElementById('new-password').value;
+            const role = document.getElementById('new-role').value;
+            const feedback = document.getElementById('adduser-feedback');
+
+            feedback.classList.add('hidden');
+
+            try {
+                const res = await fetch('/api/users', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password, role })
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    feedback.className = "mt-4 p-4 rounded-xl text-sm font-medium bg-green-50 border border-green-200 text-green-800";
+                    feedback.innerText = `User "${username}" dengan role "${role}" berhasil ditambahkan.`;
+                    feedback.classList.remove('hidden');
+                    document.getElementById('new-username').value = '';
+                    document.getElementById('new-password').value = '';
+                    document.getElementById('new-role').value = 'user';
+                    loadUsers();
+                } else {
+                    feedback.className = "mt-4 p-4 rounded-xl text-sm font-medium bg-red-50 border border-red-200 text-red-800";
+                    feedback.innerText = data.error || 'Gagal menambahkan user.';
+                    feedback.classList.remove('hidden');
+                }
+            } catch (err) {
+                feedback.className = "mt-4 p-4 rounded-xl text-sm font-medium bg-red-50 border border-red-200 text-red-800";
+                feedback.innerText = 'Gagal menghubungi server.';
+                feedback.classList.remove('hidden');
+            }
+        });
+
+        // Add link handler
+        document.getElementById('shorten-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const url = document.getElementById('url').value;
+            const keyword = document.getElementById('keyword').value;
+            const feedback = document.getElementById('add-feedback');
+
+            feedback.classList.add('hidden');
+
+            try {
+                const res = await fetch('/api/shorten', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url, keyword })
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    feedback.className = "mt-4 p-4 rounded-xl text-sm font-medium bg-green-50 border border-green-200 text-green-800";
+                    feedback.innerHTML = `Tautan berhasil diperpendek: <a href="${data.shorturl}" target="_blank" class="underline font-bold">${data.shorturl}</a>`;
+                    feedback.classList.remove('hidden');
+                    document.getElementById('url').value = '';
+                    document.getElementById('keyword').value = '';
+                    loadLinks();
+                } else {
+                    feedback.className = "mt-4 p-4 rounded-xl text-sm font-medium bg-red-50 border border-red-200 text-red-800";
+                    feedback.innerText = data.error || 'Gagal memperpendek URL.';
+                    feedback.classList.remove('hidden');
+                }
+            } catch (err) {
+                feedback.className = "mt-4 p-4 rounded-xl text-sm font-medium bg-red-50 border border-red-200 text-red-800";
+                feedback.innerText = 'Gagal menghubungi server.';
+                feedback.classList.remove('hidden');
+            }
+        });
+
+        // Copy link helper
+        function copyToClipboard(text, btn) {
+            navigator.clipboard.writeText(text);
+            const originalText = btn.innerText;
+            btn.innerText = 'Tersalin!';
+            btn.className = btn.className.replace('bg-slate-100', 'bg-green-100 text-green-700');
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.className = btn.className.replace('bg-green-100 text-green-700', 'bg-slate-100 text-slate-700');
+            }, 1500);
+        }
+
+        // Delete link
+        async function deleteLink(id) {
+            if (!confirm('Apakah Anda yakin ingin menghapus tautan ini?')) return;
+            try {
+                const res = await fetch(`/api/links/${id}`, { method: 'DELETE' });
+                if (res.ok) loadLinks();
+            } catch (err) {
+                alert('Gagal menghapus tautan.');
+            }
+        }
+
+        // Show stats modal
+        async function showStats(id, slug) {
+            document.getElementById('modal-title').innerText = `Analitik Tautan: /${slug}`;
+            document.getElementById('stats-modal').classList.remove('hidden');
+
+            try {
+                const res = await fetch(`/api/stats/${id}`);
+                const data = await res.json();
+
+                // 1. Render Chart
+                const labels = data.daily.map(d => {
+                    const date = new Date(d.date);
+                    return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
+                });
+                const counts = data.daily.map(d => d.count);
+
+                if (chartInstance) {
+                    chartInstance.destroy();
+                }
+
+                const ctx = document.getElementById('clicksChart').getContext('2d');
+                chartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Jumlah Klik',
+                            data: counts,
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.05)',
+                            fill: true,
+                            tension: 0.3,
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { beginAtZero: true, grid: { color: '#e2e8f0' } },
+                            x: { grid: { display: false } }
+                        }
+                    }
+                });
+
+                // Helper list renderer
+                const renderList = (elId, list, fallbackText) => {
+                    const el = document.getElementById(elId);
+                    el.innerHTML = '';
+                    if (list.length === 0) {
+                        el.innerHTML = `<li class="py-3 text-slate-400 text-xs italic">${fallbackText}</li>`;
+                        return;
+                    }
+                    list.forEach(item => {
+                        const name = item.referrer || item.country || item.browser || item.os || 'Unknown';
+                        el.innerHTML += `
+                            <li class="py-2.5 flex justify-between items-center font-medium">
+                                <span class="text-slate-700 truncate max-w-xs" title="${name}">${name}</span>
+                                <span class="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded font-bold">${item.count} klik</span>
+                            </li>
+                        `;
+                    });
+                };
+
+                renderList('stats-referrers', data.referrers, 'Belum ada rujukan tercatat.');
+                renderList('stats-countries', data.countries, 'Belum ada lokasi tercatat.');
+                renderList('stats-browsers', data.browsers, 'Belum ada browser tercatat.');
+                renderList('stats-os', data.os, 'Belum ada sistem operasi tercatat.');
+
+            } catch (err) {
+                console.error('Error loading stats:', err);
+            }
+        }
+
+        function closeStats() {
+            document.getElementById('stats-modal').classList.add('hidden');
+        }
+
+        // Init on load
+        async function initDashboard() {
+            await fetchSession();
+            await loadLinks();
+        }
+
+        initDashboard();
+    </script>
+</body>
+</html>

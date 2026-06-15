@@ -1,0 +1,20 @@
+# Environment & Secrets — JANGAN PERNAH diupload ke GitHub!
+.env
+.env.*
+!.env.example
+
+# Docker local volumes
+db/
+dc/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.editorconfig
+.vscode/
+.idea/
+
+# Logs
+*.log
