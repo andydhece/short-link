@@ -6,7 +6,7 @@
     <title>Dashboard - ShortLink Premium</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cinzel:wght@500;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -14,8 +14,8 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        heading: ['Plus Jakarta Sans', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        serif: ['Cinzel', 'serif'],
                     },
                 },
             },
@@ -23,22 +23,27 @@
     </script>
     <style>
         body {
-            background-color: #070913;
+            background-color: #05060b;
             background-image: 
-                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.1) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.08) 0px, transparent 50%);
+                radial-gradient(at 0% 0%, rgba(223, 172, 108, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(198, 139, 69, 0.05) 0px, transparent 50%);
             background-attachment: fixed;
         }
-        .glass-card {
-            background: rgba(15, 22, 42, 0.65);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        .luxury-card {
+            background: linear-gradient(145deg, rgba(20, 24, 38, 0.8) 0%, rgba(10, 12, 20, 0.95) 100%);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(223, 172, 108, 0.12);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.02);
         }
-        .glass-header {
-            background: rgba(10, 15, 30, 0.7);
+        .luxury-header {
+            background: rgba(10, 12, 20, 0.85);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(223, 172, 108, 0.15);
+        }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #fce0ad 0%, #dfac6c 50%, #c68b45 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
@@ -48,11 +53,11 @@
             background: rgba(0, 0, 0, 0.1);
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(223, 172, 108, 0.15);
             border-radius: 99px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(223, 172, 108, 0.3);
         }
     </style>
 </head>
@@ -60,37 +65,37 @@
     <div class="max-w-6xl mx-auto space-y-8">
         
         <!-- Header -->
-        <header class="flex justify-between items-center glass-header rounded-2xl p-6 shadow-xl">
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-gradient-to-tr from-indigo-600 to-violet-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/25">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <header class="flex justify-between items-center luxury-header rounded-3xl p-6 shadow-2xl">
+            <div class="flex items-center gap-4.5">
+                <div class="w-12 h-12 bg-gradient-to-br from-[#dfac6c] via-[#b68246] to-[#8a5d29] text-slate-950 rounded-2xl flex items-center justify-center shadow-lg shadow-amber-500/10">
+                    <svg class="w-6 h-6 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
                     </svg>
                 </div>
                 <div>
-                    <h1 class="text-xl font-bold font-heading text-white leading-tight">ShortLink</h1>
-                    <p class="text-xs text-slate-400 mt-1 font-medium">
-                        Halo, <span id="sess-username" class="font-bold text-indigo-400">...</span> 
-                        <span id="sess-role-badge" class="ml-1.5 px-2 py-0.5 text-[10px] font-bold rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 capitalize"><span id="sess-role">...</span></span>
+                    <h1 class="text-xl font-bold font-serif gold-gradient-text uppercase tracking-widest leading-none">ShortLink</h1>
+                    <p class="text-[10px] text-slate-400 mt-1.5 tracking-wider uppercase font-medium">
+                        Pengguna: <span id="sess-username" class="font-bold text-[#dfac6c]">...</span> 
+                        <span id="sess-role-badge" class="ml-2 px-2.5 py-0.5 text-[9px] font-extrabold rounded-full bg-[#dfac6c]/10 text-[#dfac6c] border border-[#dfac6c]/20 capitalize"><span id="sess-role">...</span></span>
                     </p>
                 </div>
             </div>
             <div>
-                <a href="/logout" class="px-5 py-2.5 bg-slate-900/60 hover:bg-rose-950/40 text-slate-300 hover:text-rose-400 border border-slate-800 hover:border-rose-900/50 font-semibold text-xs rounded-xl transition-all duration-300 outline-none flex items-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                <a href="/logout" class="px-5 py-2.5 bg-[#0a0c14] hover:bg-rose-950/20 text-slate-400 hover:text-rose-400 border border-slate-900 hover:border-rose-900/40 font-bold text-[10px] tracking-widest uppercase rounded-xl transition-all duration-300 outline-none flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                     Keluar
                 </a>
             </div>
         </header>
 
         <!-- Tab Navigation (only visible if Admin) -->
-        <div id="admin-tabs" class="hidden flex gap-2 border-b border-slate-800 pb-px">
-            <button onclick="switchTab('links')" id="tab-btn-links" class="pb-3 px-4 border-b-2 border-indigo-500 text-indigo-400 font-bold text-sm transition-all focus:outline-none flex items-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+        <div id="admin-tabs" class="hidden flex gap-2 border-b border-slate-900 pb-px">
+            <button onclick="switchTab('links')" id="tab-btn-links" class="pb-3.5 px-4 border-b-2 border-[#dfac6c] text-[#dfac6c] font-bold text-xs tracking-widest uppercase transition-all focus:outline-none flex items-center gap-2">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
                 Tautan
             </button>
-            <button onclick="switchTab('users')" id="tab-btn-users" class="pb-3 px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-300 font-semibold text-sm transition-all focus:outline-none flex items-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+            <button onclick="switchTab('users')" id="tab-btn-users" class="pb-3.5 px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-350 font-bold text-xs tracking-widest uppercase transition-all focus:outline-none flex items-center gap-2">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                 Manajemen User
             </button>
         </div>
@@ -98,41 +103,41 @@
         <!-- Links Section -->
         <div id="links-section" class="space-y-8">
             <!-- Form Add Link -->
-            <section class="glass-card rounded-3xl p-6 md:p-8">
-                <h2 class="text-lg font-bold font-heading text-white mb-6 flex items-center gap-2.5">
-                    <span class="w-2.5 h-2.5 rounded-full bg-indigo-500 shadow-lg shadow-indigo-500/50"></span>
+            <section class="luxury-card rounded-[32px] p-6 md:p-8">
+                <h2 class="text-sm font-bold tracking-widest uppercase text-white mb-6 flex items-center gap-3">
+                    <span class="w-2 h-2 rounded-full bg-[#dfac6c] shadow-lg shadow-amber-500/50"></span>
                     Buat Tautan Baru
                 </h2>
                 <form id="shorten-form" class="flex flex-col md:flex-row gap-4 items-end">
                     <div class="flex-grow w-full">
-                        <label for="url" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">Tautan Panjang (Target URL)</label>
+                        <label for="url" class="block text-[10px] font-bold text-[#dfac6c] uppercase tracking-widest mb-2.5">Tautan Panjang (Target URL)</label>
                         <input type="text" id="url" required placeholder="https://domain-panjang.com/halaman/detail"
-                            class="w-full px-4 py-3.5 bg-slate-950/60 border border-slate-800 text-white placeholder-slate-600 rounded-2xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all duration-200 text-sm font-medium">
+                            class="w-full px-4 py-3.5 bg-[#0a0c14] border border-slate-900 text-white placeholder-slate-600 rounded-2xl focus:border-[#dfac6c]/50 focus:ring-4 focus:ring-[#dfac6c]/5 outline-none transition-all duration-300 text-xs font-medium">
                     </div>
                     <div class="w-full md:w-72">
-                        <label for="keyword" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">Kata Kunci Kustom (Opsional)</label>
+                        <label for="keyword" class="block text-[10px] font-bold text-[#dfac6c] uppercase tracking-widest mb-2.5">Kata Kunci Kustom (Opsional)</label>
                         <input type="text" id="keyword" placeholder="slug-kustom"
-                            class="w-full px-4 py-3.5 bg-slate-950/60 border border-slate-800 text-white placeholder-slate-600 rounded-2xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all duration-200 text-sm font-medium">
+                            class="w-full px-4 py-3.5 bg-[#0a0c14] border border-slate-900 text-white placeholder-slate-600 rounded-2xl focus:border-[#dfac6c]/50 focus:ring-4 focus:ring-[#dfac6c]/5 outline-none transition-all duration-300 text-xs font-medium">
                     </div>
                     <button type="submit" 
-                        class="w-full md:w-auto px-7 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold text-sm rounded-2xl shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/35 transition-all duration-300 hover:scale-[1.01] active:scale-[0.99] outline-none whitespace-nowrap">
+                        class="w-full md:w-auto px-7 py-4.5 bg-gradient-to-r from-[#dfac6c] via-[#b68246] to-[#8a5d29] hover:brightness-110 active:brightness-95 text-slate-950 font-bold text-xs tracking-widest uppercase rounded-2xl shadow-lg shadow-amber-500/5 transition-all duration-300 hover:scale-[1.01] active:scale-[0.99] outline-none whitespace-nowrap">
                         Perpendek URL
                     </button>
                 </form>
-                <div id="add-feedback" class="hidden mt-5 p-4 rounded-2xl text-sm font-medium"></div>
+                <div id="add-feedback" class="hidden mt-5 p-4 rounded-2xl text-xs font-bold"></div>
             </section>
 
             <!-- Links Table -->
-            <section class="glass-card rounded-3xl overflow-hidden shadow-2xl">
-                <div class="p-6 md:p-8 border-b border-slate-800/60 flex justify-between items-center">
-                    <h2 class="text-lg font-bold font-heading text-white">Semua Tautan</h2>
-                    <span id="links-count" class="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-xs font-bold px-3 py-1 rounded-full">0 Tautan</span>
+            <section class="luxury-card rounded-[32px] overflow-hidden shadow-2xl">
+                <div class="p-6 md:p-8 border-b border-slate-900/60 flex justify-between items-center">
+                    <h2 class="text-sm font-bold tracking-widest uppercase text-white">Semua Tautan</h2>
+                    <span id="links-count" class="bg-[#dfac6c]/10 text-[#dfac6c] border border-[#dfac6c]/20 text-[10px] font-bold px-3.5 py-1.5 rounded-full tracking-wider uppercase">0 Tautan</span>
                 </div>
 
                 <div class="overflow-x-auto custom-scrollbar">
-                    <table class="w-full text-left border-collapse min-w-[700px]">
+                    <table class="w-full text-left border-collapse min-w-[750px]">
                         <thead>
-                            <tr class="bg-slate-950/40 text-slate-400 text-xs font-bold uppercase tracking-wider border-b border-slate-800/80">
+                            <tr class="bg-slate-950/50 text-slate-400 text-[10px] font-bold uppercase tracking-widest border-b border-slate-900/80">
                                 <th class="py-4.5 px-6">Tautan Pendek</th>
                                 <th class="py-4.5 px-6">Tautan Asli</th>
                                 <th class="py-4.5 px-6">Tanggal Dibuat</th>
@@ -141,7 +146,7 @@
                                 <th class="py-4.5 px-6 text-right">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody id="links-list" class="divide-y divide-slate-800/50 text-sm">
+                        <tbody id="links-list" class="divide-y divide-slate-900/60 text-xs">
                             <!-- Content dynamically loaded -->
                         </tbody>
                     </table>
@@ -152,48 +157,48 @@
         <!-- Users Section (Admin Only) -->
         <div id="users-section" class="hidden space-y-8">
             <!-- Form Add User -->
-            <section class="glass-card rounded-3xl p-6 md:p-8">
-                <h2 class="text-lg font-bold font-heading text-white mb-6 flex items-center gap-2.5">
-                    <span class="w-2.5 h-2.5 rounded-full bg-indigo-500 shadow-lg shadow-indigo-500/50"></span>
+            <section class="luxury-card rounded-[32px] p-6 md:p-8">
+                <h2 class="text-sm font-bold tracking-widest uppercase text-white mb-6 flex items-center gap-3">
+                    <span class="w-2 h-2 rounded-full bg-[#dfac6c] shadow-lg shadow-amber-500/50"></span>
                     Tambah User Baru
                 </h2>
                 <form id="adduser-form" class="flex flex-col md:flex-row gap-4 items-end">
                     <div class="flex-grow w-full">
-                        <label for="new-username" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">Username</label>
+                        <label for="new-username" class="block text-[10px] font-bold text-[#dfac6c] uppercase tracking-widest mb-2.5">Username</label>
                         <input type="text" id="new-username" required placeholder="username" minlength="3"
-                            class="w-full px-4 py-3.5 bg-slate-950/60 border border-slate-800 text-white placeholder-slate-600 rounded-2xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all duration-200 text-sm font-medium">
+                            class="w-full px-4 py-3.5 bg-[#0a0c14] border border-slate-900 text-white placeholder-slate-600 rounded-2xl focus:border-[#dfac6c]/50 focus:ring-4 focus:ring-[#dfac6c]/5 outline-none transition-all duration-300 text-xs font-medium">
                     </div>
                     <div class="flex-grow w-full">
-                        <label for="new-password" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">Password</label>
+                        <label for="new-password" class="block text-[10px] font-bold text-[#dfac6c] uppercase tracking-widest mb-2.5">Password</label>
                         <input type="password" id="new-password" required placeholder="password" minlength="6"
-                            class="w-full px-4 py-3.5 bg-slate-950/60 border border-slate-800 text-white placeholder-slate-600 rounded-2xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all duration-200 text-sm font-medium">
+                            class="w-full px-4 py-3.5 bg-[#0a0c14] border border-slate-900 text-white placeholder-slate-600 rounded-2xl focus:border-[#dfac6c]/50 focus:ring-4 focus:ring-[#dfac6c]/5 outline-none transition-all duration-300 text-xs font-medium">
                     </div>
                     <div class="w-full md:w-56">
-                        <label for="new-role" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">Role</label>
-                        <select id="new-role" class="w-full px-4 py-3.5 bg-slate-950/60 border border-slate-800 text-white rounded-2xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all duration-200 text-sm font-medium bg-[#0f162a]">
+                        <label for="new-role" class="block text-[10px] font-bold text-[#dfac6c] uppercase tracking-widest mb-2.5">Role</label>
+                        <select id="new-role" class="w-full px-4 py-3.5 bg-[#0a0c14] border border-slate-900 text-white rounded-2xl focus:border-[#dfac6c]/50 focus:ring-4 focus:ring-[#dfac6c]/5 outline-none transition-all duration-200 text-xs font-medium bg-[#0f162a]">
                             <option value="user">User</option>
                             <option value="admin">Admin</option>
                         </select>
                     </div>
                     <button type="submit" 
-                        class="w-full md:w-auto px-7 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold text-sm rounded-2xl shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/35 transition-all duration-300 hover:scale-[1.01] active:scale-[0.99] outline-none whitespace-nowrap">
+                        class="w-full md:w-auto px-7 py-4.5 bg-gradient-to-r from-[#dfac6c] via-[#b68246] to-[#8a5d29] hover:brightness-110 active:brightness-95 text-slate-950 font-bold text-xs tracking-widest uppercase rounded-2xl shadow-lg shadow-amber-500/5 transition-all duration-300 hover:scale-[1.01] active:scale-[0.99] outline-none whitespace-nowrap">
                         Tambah User
                     </button>
                 </form>
-                <div id="adduser-feedback" class="hidden mt-5 p-4 rounded-2xl text-sm font-medium"></div>
+                <div id="adduser-feedback" class="hidden mt-5 p-4 rounded-2xl text-xs font-bold"></div>
             </section>
 
             <!-- Users List Table -->
-            <section class="glass-card rounded-3xl overflow-hidden shadow-2xl">
-                <div class="p-6 md:p-8 border-b border-slate-800/60 flex justify-between items-center">
-                    <h2 class="text-lg font-bold font-heading text-white">Semua User</h2>
-                    <span id="users-count" class="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-xs font-bold px-3 py-1 rounded-full">0 User</span>
+            <section class="luxury-card rounded-[32px] overflow-hidden shadow-2xl">
+                <div class="p-6 md:p-8 border-b border-slate-900/60 flex justify-between items-center">
+                    <h2 class="text-sm font-bold tracking-widest uppercase text-white">Semua User</h2>
+                    <span id="users-count" class="bg-[#dfac6c]/10 text-[#dfac6c] border border-[#dfac6c]/20 text-[10px] font-bold px-3.5 py-1.5 rounded-full tracking-wider uppercase">0 User</span>
                 </div>
 
                 <div class="overflow-x-auto custom-scrollbar">
                     <table class="w-full text-left border-collapse min-w-[600px]">
                         <thead>
-                            <tr class="bg-slate-950/40 text-slate-400 text-xs font-bold uppercase tracking-wider border-b border-slate-800/80">
+                            <tr class="bg-slate-950/50 text-slate-400 text-[10px] font-bold uppercase tracking-widest border-b border-slate-900/80">
                                 <th class="py-4.5 px-6">ID</th>
                                 <th class="py-4.5 px-6">Username</th>
                                 <th class="py-4.5 px-6">Role</th>
@@ -201,7 +206,7 @@
                                 <th class="py-4.5 px-6 text-right">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody id="users-list" class="divide-y divide-slate-800/50 text-sm">
+                        <tbody id="users-list" class="divide-y divide-slate-900/60 text-xs">
                             <!-- Content dynamically loaded -->
                         </tbody>
                     </table>
@@ -211,40 +216,40 @@
     </div>
 
     <!-- Edit Link Modal -->
-    <div id="edit-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
-        <div class="glass-card rounded-3xl max-w-md w-full p-6 md:p-8 shadow-2xl relative border border-slate-800/80 animate-in fade-in zoom-in-95 duration-200">
+    <div id="edit-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+        <div class="luxury-card rounded-[32px] max-w-md w-full p-6 md:p-8 shadow-2xl relative border border-slate-800 animate-in fade-in zoom-in-95 duration-200">
             <button onclick="closeEditModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
             
-            <h2 class="text-xl font-bold font-heading text-white mb-6 flex items-center gap-2">
-                <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+            <h2 class="text-base font-bold tracking-widest uppercase text-white mb-6 flex items-center gap-2.5">
+                <svg class="w-4 h-4 text-[#dfac6c]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                 Edit Tautan
             </h2>
 
             <form id="edit-form" class="space-y-5">
                 <input type="hidden" id="edit-id">
                 <div>
-                    <label for="edit-title" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Judul Tautan (Title)</label>
+                    <label for="edit-title" class="block text-[10px] font-bold text-[#dfac6c] uppercase tracking-widest mb-2">Judul Tautan (Title)</label>
                     <input type="text" id="edit-title" placeholder="Judul opsional"
-                        class="w-full px-4 py-3 bg-slate-950/60 border border-slate-800 text-white placeholder-slate-600 rounded-2xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all duration-200 text-sm font-medium">
+                        class="w-full px-4 py-3 bg-[#0a0c14] border border-slate-900 text-white placeholder-slate-600 rounded-2xl focus:border-[#dfac6c]/50 focus:ring-4 focus:ring-[#dfac6c]/5 outline-none transition-all duration-300 text-xs font-medium">
                 </div>
                 <div>
-                    <label for="edit-url" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Tautan Panjang (Target URL)</label>
+                    <label for="edit-url" class="block text-[10px] font-bold text-[#dfac6c] uppercase tracking-widest mb-2">Tautan Panjang (Target URL)</label>
                     <input type="text" id="edit-url" required placeholder="https://domain-panjang.com"
-                        class="w-full px-4 py-3 bg-slate-950/60 border border-slate-800 text-white placeholder-slate-600 rounded-2xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all duration-200 text-sm font-medium">
+                        class="w-full px-4 py-3 bg-[#0a0c14] border border-slate-900 text-white placeholder-slate-600 rounded-2xl focus:border-[#dfac6c]/50 focus:ring-4 focus:ring-[#dfac6c]/5 outline-none transition-all duration-300 text-xs font-medium">
                 </div>
                 <div>
-                    <label for="edit-slug" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Kata Kunci Kustom (Slug)</label>
+                    <label for="edit-slug" class="block text-[10px] font-bold text-[#dfac6c] uppercase tracking-widest mb-2">Kata Kunci Kustom (Slug)</label>
                     <input type="text" id="edit-slug" required placeholder="slug"
-                        class="w-full px-4 py-3 bg-slate-950/60 border border-slate-800 text-white placeholder-slate-600 rounded-2xl focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all duration-200 text-sm font-medium">
+                        class="w-full px-4 py-3 bg-[#0a0c14] border border-slate-900 text-white placeholder-slate-600 rounded-2xl focus:border-[#dfac6c]/50 focus:ring-4 focus:ring-[#dfac6c]/5 outline-none transition-all duration-300 text-xs font-medium">
                 </div>
-                <div id="edit-feedback" class="hidden p-4 rounded-2xl text-sm font-medium"></div>
+                <div id="edit-feedback" class="hidden p-4 rounded-2xl text-xs font-bold"></div>
                 <div class="flex justify-end gap-3 mt-6">
-                    <button type="button" onclick="closeEditModal()" class="px-5 py-2.5 bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800 text-slate-300 font-semibold text-xs rounded-xl transition-all duration-200">
+                    <button type="button" onclick="closeEditModal()" class="px-5 py-2.5 bg-[#0a0c14] hover:bg-slate-900 border border-slate-900 text-slate-400 hover:text-white font-bold text-[10px] tracking-widest uppercase rounded-xl transition-all duration-200">
                         Batal
                     </button>
-                    <button type="submit" class="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/35 transition-all duration-200">
+                    <button type="submit" class="px-5 py-2.5 bg-gradient-to-r from-[#dfac6c] via-[#b68246] to-[#8a5d29] hover:brightness-110 active:brightness-95 text-slate-950 font-bold text-[10px] tracking-widest uppercase rounded-xl shadow-lg shadow-amber-500/5 transition-all duration-200">
                         Simpan Perubahan
                     </button>
                 </div>
@@ -253,67 +258,67 @@
     </div>
 
     <!-- Stats Drawer/Modal -->
-    <div id="stats-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
-        <div class="glass-card rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 shadow-2xl relative border border-slate-800/85 custom-scrollbar animate-in fade-in zoom-in-95 duration-200">
+    <div id="stats-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+        <div class="luxury-card rounded-[32px] max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 shadow-2xl relative border border-slate-800 custom-scrollbar animate-in fade-in zoom-in-95 duration-200">
             <button onclick="closeStats()" class="absolute top-6 right-6 text-slate-400 hover:text-white transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
             
-            <h2 id="modal-title" class="text-xl font-bold font-heading text-white mb-6 flex items-center gap-2">
-                <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2"></path></svg>
+            <h2 id="modal-title" class="text-base font-bold tracking-widest uppercase text-white mb-6 flex items-center gap-2.5">
+                <svg class="w-4 h-4 text-[#dfac6c]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2"></path></svg>
                 Analitik Tautan
             </h2>
 
             <!-- Analytics Charts and Tables Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Line Chart -->
-                <div class="md:col-span-2 bg-slate-950/60 rounded-2xl p-5 border border-slate-800/60 shadow-inner">
-                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Tren Klik (14 Hari Terakhir)</h3>
+                <div class="md:col-span-2 bg-slate-950/60 rounded-2xl p-5 border border-slate-900/60 shadow-inner">
+                    <h3 class="text-[10px] font-bold text-[#dfac6c] uppercase tracking-widest mb-4">Tren Klik (14 Hari Terakhir)</h3>
                     <div class="h-64">
                         <canvas id="clicksChart"></canvas>
                     </div>
                 </div>
 
                 <!-- Referrers Table -->
-                <div class="bg-slate-950/30 border border-slate-800/50 rounded-2xl p-5">
-                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-1.5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-cyan-500"></span>
+                <div class="bg-slate-950/30 border border-slate-900/50 rounded-2xl p-5">
+                    <h3 class="text-[10px] font-bold text-[#dfac6c] uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#dfac6c]"></span>
                         Top Rujukan (Referrers)
                     </h3>
-                    <ul id="stats-referrers" class="divide-y divide-slate-900/60 text-sm">
+                    <ul id="stats-referrers" class="divide-y divide-slate-900/60 text-xs">
                         <!-- Loaded dynamically -->
                     </ul>
                 </div>
 
                 <!-- Countries Table -->
-                <div class="bg-slate-950/30 border border-slate-800/50 rounded-2xl p-5">
-                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-1.5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
+                <div class="bg-slate-950/30 border border-slate-900/50 rounded-2xl p-5">
+                    <h3 class="text-[10px] font-bold text-[#dfac6c] uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#dfac6c]"></span>
                         Top Lokasi (Negara)
                     </h3>
-                    <ul id="stats-countries" class="divide-y divide-slate-900/60 text-sm">
+                    <ul id="stats-countries" class="divide-y divide-slate-900/60 text-xs">
                         <!-- Loaded dynamically -->
                     </ul>
                 </div>
 
                 <!-- Browsers Table -->
-                <div class="bg-slate-950/30 border border-slate-800/50 rounded-2xl p-5">
-                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-1.5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                <div class="bg-slate-950/30 border border-slate-900/50 rounded-2xl p-5">
+                    <h3 class="text-[10px] font-bold text-[#dfac6c] uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#dfac6c]"></span>
                         Top Browser
                     </h3>
-                    <ul id="stats-browsers" class="divide-y divide-slate-900/60 text-sm">
+                    <ul id="stats-browsers" class="divide-y divide-slate-900/60 text-xs">
                         <!-- Loaded dynamically -->
                     </ul>
                 </div>
 
                 <!-- OS Table -->
-                <div class="bg-slate-950/30 border border-slate-800/50 rounded-2xl p-5">
-                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-1.5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                <div class="bg-slate-950/30 border border-slate-900/50 rounded-2xl p-5">
+                    <h3 class="text-[10px] font-bold text-[#dfac6c] uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#dfac6c]"></span>
                         Top Sistem Operasi
                     </h3>
-                    <ul id="stats-os" class="divide-y divide-slate-900/60 text-sm">
+                    <ul id="stats-os" class="divide-y divide-slate-900/60 text-xs">
                         <!-- Loaded dynamically -->
                     </ul>
                 </div>
@@ -353,14 +358,14 @@
             if (tab === 'links') {
                 document.getElementById('links-section').classList.remove('hidden');
                 document.getElementById('users-section').classList.add('hidden');
-                document.getElementById('tab-btn-links').className = "pb-3 px-4 border-b-2 border-indigo-500 text-indigo-400 font-bold text-sm transition-all focus:outline-none flex items-center gap-2";
-                document.getElementById('tab-btn-users').className = "pb-3 px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-300 font-semibold text-sm transition-all focus:outline-none flex items-center gap-2";
+                document.getElementById('tab-btn-links').className = "pb-3.5 px-4 border-b-2 border-[#dfac6c] text-[#dfac6c] font-bold text-xs tracking-widest uppercase transition-all focus:outline-none flex items-center gap-2";
+                document.getElementById('tab-btn-users').className = "pb-3.5 px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-350 font-bold text-xs tracking-widest uppercase transition-all focus:outline-none flex items-center gap-2";
                 loadLinks();
             } else if (tab === 'users') {
                 document.getElementById('links-section').classList.add('hidden');
                 document.getElementById('users-section').classList.remove('hidden');
-                document.getElementById('tab-btn-links').className = "pb-3 px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-300 font-semibold text-sm transition-all focus:outline-none flex items-center gap-2";
-                document.getElementById('tab-btn-users').className = "pb-3 px-4 border-b-2 border-indigo-500 text-indigo-400 font-bold text-sm transition-all focus:outline-none flex items-center gap-2";
+                document.getElementById('tab-btn-links').className = "pb-3.5 px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-350 font-bold text-xs tracking-widest uppercase transition-all focus:outline-none flex items-center gap-2";
+                document.getElementById('tab-btn-users').className = "pb-3.5 px-4 border-b-2 border-[#dfac6c] text-[#dfac6c] font-bold text-xs tracking-widest uppercase transition-all focus:outline-none flex items-center gap-2";
                 loadUsers();
             }
         }
@@ -389,40 +394,40 @@
                     const fullShortUrl = `${window.location.origin}/${link.slug}`;
 
                     const creatorCell = (currentSession && currentSession.role === 'admin') 
-                        ? `<td class="py-4 px-6 font-semibold text-slate-400">${link.creator || 'default'}</td>` 
+                        ? `<td class="py-4 px-6 font-bold text-slate-400">${link.creator || 'default'}</td>` 
                         : '';
 
                     list.innerHTML += `
-                        <tr class="hover:bg-slate-900/30 transition-colors border-b border-slate-800/40">
-                            <td class="py-4.5 px-6 font-bold text-indigo-400">
+                        <tr class="hover:bg-slate-900/20 transition-colors border-b border-slate-900/40">
+                            <td class="py-4.5 px-6 font-extrabold text-[#dfac6c]">
                                 <a href="${fullShortUrl}" target="_blank" class="hover:underline flex items-center gap-1.5 group">
                                     /${link.slug}
                                     <svg class="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                                 </a>
                             </td>
                             <td class="py-4.5 px-6 text-slate-400 max-w-sm truncate" title="${link.url}">
-                                <div class="font-bold text-slate-100 mb-1">${link.title || link.url}</div>
-                                <a href="${link.url}" target="_blank" class="text-xs text-slate-500 hover:underline hover:text-indigo-400 font-mono">${link.url}</a>
+                                <div class="font-extrabold text-slate-100 mb-1">${link.title || link.url}</div>
+                                <a href="${link.url}" target="_blank" class="text-[10px] text-slate-500 hover:underline hover:text-[#dfac6c] font-mono">${link.url}</a>
                             </td>
-                            <td class="py-4.5 px-6 text-slate-400 text-xs">${created}</td>
+                            <td class="py-4.5 px-6 text-slate-400 text-[10px] tracking-wider uppercase font-semibold">${created}</td>
                             ${creatorCell}
                             <td class="py-4.5 px-6 text-center">
-                                <span class="px-2.5 py-1 rounded-full bg-slate-950/75 border border-slate-800 font-extrabold text-slate-200 text-xs shadow-inner">
+                                <span class="px-3 py-1 rounded-full bg-slate-950 border border-slate-900 font-extrabold text-slate-200 text-xs shadow-inner">
                                     ${link.clicks}
                                 </span>
                             </td>
                             <td class="py-4.5 px-6 text-right">
                                 <div class="inline-flex gap-2">
-                                    <button onclick="copyToClipboard('${fullShortUrl}', this)" class="px-3.5 py-1.5 bg-slate-900/80 hover:bg-slate-800 border border-slate-800/80 hover:border-slate-700/60 text-slate-350 text-xs font-bold rounded-xl transition-all outline-none">
+                                    <button onclick="copyToClipboard('${fullShortUrl}', this)" class="px-3.5 py-1.5 bg-[#0a0c14] hover:bg-slate-900 border border-slate-900 text-slate-450 text-[10px] tracking-widest uppercase font-bold rounded-xl transition-all outline-none">
                                         Salin
                                     </button>
-                                    <button onclick="showEditModal(${link.id})" class="px-3.5 py-1.5 bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500/20 text-xs font-bold rounded-xl transition-all outline-none">
+                                    <button onclick="showEditModal(${link.id})" class="px-3.5 py-1.5 bg-amber-500/10 text-amber-300 border border-amber-500/20 hover:bg-amber-500/20 text-[10px] tracking-widest uppercase font-bold rounded-xl transition-all outline-none">
                                         Edit
                                     </button>
-                                    <button onclick="showStats(${link.id}, '${link.slug}')" class="px-3.5 py-1.5 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 hover:bg-indigo-500/20 text-xs font-bold rounded-xl transition-all outline-none">
+                                    <button onclick="showStats(${link.id}, '${link.slug}')" class="px-3.5 py-1.5 bg-[#dfac6c]/10 text-[#dfac6c] border border-[#dfac6c]/20 hover:bg-[#dfac6c]/20 text-[10px] tracking-widest uppercase font-bold rounded-xl transition-all outline-none">
                                         Statistik
                                     </button>
-                                    <button onclick="deleteLink(${link.id})" class="px-3.5 py-1.5 bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500/20 text-xs font-bold rounded-xl transition-all outline-none">
+                                    <button onclick="deleteLink(${link.id})" class="px-3.5 py-1.5 bg-rose-500/10 text-rose-450 border border-rose-500/20 hover:bg-rose-500/20 text-[10px] tracking-widest uppercase font-bold rounded-xl transition-all outline-none">
                                         Hapus
                                     </button>
                                 </div>
@@ -452,24 +457,24 @@
 
                     const isSelf = user.username === currentSession.username;
                     const disabledAttr = isSelf ? 'disabled' : '';
-                    const disabledClass = isSelf ? 'opacity-50 cursor-not-allowed bg-slate-950/40 text-slate-500 border-slate-900' : 'bg-slate-950 text-slate-200 border-slate-800';
-                    const btnClass = isSelf ? 'opacity-30 cursor-not-allowed hover:bg-rose-500/5' : '';
+                    const disabledClass = isSelf ? 'opacity-50 cursor-not-allowed bg-slate-950/40 text-slate-550 border-slate-900' : 'bg-slate-950 text-slate-200 border-slate-900';
+                    const btnClass = isSelf ? 'opacity-30 cursor-not-allowed hover:bg-[#0a0c14]' : '';
 
                     list.innerHTML += `
-                        <tr class="hover:bg-slate-900/30 transition-colors border-b border-slate-800/40">
-                            <td class="py-4.5 px-6 text-slate-500 font-semibold">${user.id}</td>
-                            <td class="py-4.5 px-6 font-bold text-slate-200">${user.username} ${isSelf ? '<span class="text-xs text-indigo-400 font-medium font-mono ml-1.5">(Anda)</span>' : ''}</td>
+                        <tr class="hover:bg-slate-900/20 transition-colors border-b border-slate-900/40">
+                            <td class="py-4.5 px-6 text-slate-500 font-bold">${user.id}</td>
+                            <td class="py-4.5 px-6 font-bold text-slate-200">${user.username} ${isSelf ? '<span class="text-xs text-[#dfac6c] font-medium font-mono ml-1.5">(Anda)</span>' : ''}</td>
                             <td class="py-4.5 px-6">
                                 <select onchange="changeUserRole(${user.id}, this.value)" ${disabledAttr} 
-                                    class="px-3 py-1.5 border rounded-xl text-xs font-semibold outline-none transition-all focus:border-indigo-500 ${disabledClass}">
+                                    class="px-3 py-1.5 border rounded-xl text-xs font-semibold outline-none transition-all focus:border-[#dfac6c] ${disabledClass}">
                                     <option value="user" ${user.role === 'user' ? 'selected' : ''}>User</option>
                                     <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option>
                                 </select>
                             </td>
-                            <td class="py-4.5 px-6 text-slate-400 text-xs">${created}</td>
+                            <td class="py-4.5 px-6 text-slate-400 text-xs font-semibold uppercase tracking-wider">${created}</td>
                             <td class="py-4.5 px-6 text-right">
                                 <button onclick="deleteUser(${user.id}, '${user.username}')" ${disabledAttr} 
-                                    class="px-3.5 py-1.5 bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500/20 text-xs font-bold rounded-xl transition-all ${btnClass}">
+                                    class="px-3.5 py-1.5 bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500/20 text-[10px] tracking-widest uppercase font-bold rounded-xl transition-all ${btnClass}">
                                     Hapus
                                 </button>
                             </td>
@@ -537,7 +542,7 @@
                 const data = await res.json();
 
                 if (res.ok) {
-                    feedback.className = "mt-5 p-4 rounded-2xl text-sm font-medium bg-emerald-500/10 border border-emerald-500/20 text-emerald-400";
+                    feedback.className = "mt-5 p-4 rounded-2xl text-xs font-bold bg-emerald-500/10 border border-emerald-500/20 text-emerald-400";
                     feedback.innerText = `User "${username}" dengan role "${role}" berhasil ditambahkan.`;
                     feedback.classList.remove('hidden');
                     document.getElementById('new-username').value = '';
@@ -545,12 +550,12 @@
                     document.getElementById('new-role').value = 'user';
                     loadUsers();
                 } else {
-                    feedback.className = "mt-5 p-4 rounded-2xl text-sm font-medium bg-rose-500/10 border border-rose-500/20 text-rose-400";
+                    feedback.className = "mt-5 p-4 rounded-2xl text-xs font-bold bg-rose-500/10 border border-rose-500/20 text-rose-450";
                     feedback.innerText = data.error || 'Gagal menambahkan user.';
                     feedback.classList.remove('hidden');
                 }
             } catch (err) {
-                feedback.className = "mt-5 p-4 rounded-2xl text-sm font-medium bg-rose-500/10 border border-rose-500/20 text-rose-400";
+                feedback.className = "mt-5 p-4 rounded-2xl text-xs font-bold bg-rose-500/10 border border-rose-500/20 text-rose-450";
                 feedback.innerText = 'Gagal menghubungi server.';
                 feedback.classList.remove('hidden');
             }
@@ -574,19 +579,19 @@
                 const data = await res.json();
 
                 if (res.ok) {
-                    feedback.className = "mt-5 p-4 rounded-2xl text-sm font-medium bg-emerald-500/10 border border-emerald-500/20 text-emerald-400";
-                    feedback.innerHTML = `Tautan berhasil diperpendek: <a href="${data.shorturl}" target="_blank" class="underline font-bold hover:text-emerald-350">${data.shorturl}</a>`;
+                    feedback.className = "mt-5 p-4 rounded-2xl text-xs font-bold bg-emerald-500/10 border border-emerald-500/20 text-emerald-400";
+                    feedback.innerHTML = `Tautan berhasil diperpendek: <a href="${data.shorturl}" target="_blank" class="underline font-bold hover:text-emerald-300">${data.shorturl}</a>`;
                     feedback.classList.remove('hidden');
                     document.getElementById('url').value = '';
                     document.getElementById('keyword').value = '';
                     loadLinks();
                 } else {
-                    feedback.className = "mt-5 p-4 rounded-2xl text-sm font-medium bg-rose-500/10 border border-rose-500/20 text-rose-400";
+                    feedback.className = "mt-5 p-4 rounded-2xl text-xs font-bold bg-rose-500/10 border border-rose-500/20 text-rose-455";
                     feedback.innerText = data.error || 'Gagal memperpendek URL.';
                     feedback.classList.remove('hidden');
                 }
             } catch (err) {
-                feedback.className = "mt-5 p-4 rounded-2xl text-sm font-medium bg-rose-500/10 border border-rose-500/20 text-rose-400";
+                feedback.className = "mt-5 p-4 rounded-2xl text-xs font-bold bg-rose-500/10 border border-rose-500/20 text-rose-455";
                 feedback.innerText = 'Gagal menghubungi server.';
                 feedback.classList.remove('hidden');
             }
@@ -597,10 +602,10 @@
             navigator.clipboard.writeText(text);
             const originalText = btn.innerText;
             btn.innerText = 'Tersalin!';
-            btn.className = btn.className.replace('bg-slate-900/80', 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30');
+            btn.className = btn.className.replace('bg-[#0a0c14]', 'bg-[#dfac6c]/15 text-[#dfac6c] border-[#dfac6c]/30');
             setTimeout(() => {
                 btn.innerText = originalText;
-                btn.className = btn.className.replace('bg-emerald-500/15 text-emerald-400 border-emerald-500/30', 'bg-slate-900/80');
+                btn.className = btn.className.replace('bg-[#dfac6c]/15 text-[#dfac6c] border-[#dfac6c]/30', 'bg-[#0a0c14]');
             }, 1500);
         }
 
@@ -618,8 +623,8 @@
         // Show stats modal
         async function showStats(id, slug) {
             document.getElementById('modal-title').innerHTML = `
-                <svg class="w-5 h-5 text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2"></path></svg>
-                Analitik Tautan: <span class="text-indigo-400 ml-1.5">/${slug}</span>
+                <svg class="w-4 h-4 text-[#dfac6c] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2"></path></svg>
+                Analitik Tautan: <span class="text-[#dfac6c] ml-1.5">/${slug}</span>
             `;
             document.getElementById('stats-modal').classList.remove('hidden');
 
@@ -646,13 +651,13 @@
                         datasets: [{
                             label: 'Jumlah Klik',
                             data: counts,
-                            borderColor: '#6366f1',
-                            backgroundColor: 'rgba(99, 102, 241, 0.05)',
+                            borderColor: '#dfac6c',
+                            backgroundColor: 'rgba(223, 172, 108, 0.04)',
                             fill: true,
                             tension: 0.3,
-                            borderWidth: 3,
-                            pointBackgroundColor: '#6366f1',
-                            pointHoverRadius: 7
+                            borderWidth: 2.5,
+                            pointBackgroundColor: '#dfac6c',
+                            pointHoverRadius: 6
                         }]
                     },
                     options: {
@@ -662,7 +667,7 @@
                         scales: {
                             y: { 
                                 beginAtZero: true, 
-                                grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                                grid: { color: 'rgba(255, 255, 255, 0.03)' },
                                 ticks: { color: '#94a3b8' }
                             },
                             x: { 
@@ -684,9 +689,9 @@
                     list.forEach(item => {
                         const name = item.referrer || item.country || item.browser || item.os || 'Unknown';
                         el.innerHTML += `
-                            <li class="py-3.5 flex justify-between items-center font-semibold text-slate-350 border-b border-slate-900/30 last:border-0">
-                                <span class="truncate max-w-xs text-slate-300" title="${name}">${name}</span>
-                                <span class="text-xs bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2.5 py-1 rounded-full font-extrabold">${item.count} klik</span>
+                            <li class="py-3.5 flex justify-between items-center font-bold text-slate-300 border-b border-slate-900/35 last:border-0">
+                                <span class="truncate max-w-xs text-slate-350" title="${name}">${name}</span>
+                                <span class="text-[10px] bg-[#dfac6c]/10 text-[#dfac6c] border border-[#dfac6c]/20 px-2.5 py-1 rounded-full font-extrabold">${item.count} klik</span>
                             </li>
                         `;
                     });
@@ -740,7 +745,7 @@
                 const data = await res.json();
 
                 if (res.ok) {
-                    feedback.className = "p-4 rounded-2xl text-sm font-medium bg-emerald-500/10 border border-emerald-500/20 text-emerald-400";
+                    feedback.className = "p-4 rounded-2xl text-xs font-bold bg-emerald-500/10 border border-emerald-500/20 text-emerald-400";
                     feedback.innerText = "Tautan berhasil diperbarui.";
                     feedback.classList.remove('hidden');
                     setTimeout(() => {
@@ -748,12 +753,12 @@
                         loadLinks();
                     }, 1000);
                 } else {
-                    feedback.className = "p-4 rounded-2xl text-sm font-medium bg-rose-500/10 border border-rose-500/20 text-rose-400";
+                    feedback.className = "p-4 rounded-2xl text-xs font-bold bg-rose-500/10 border border-rose-500/20 text-rose-455";
                     feedback.innerText = data.error || 'Gagal memperbarui tautan.';
                     feedback.classList.remove('hidden');
                 }
             } catch (err) {
-                feedback.className = "p-4 rounded-2xl text-sm font-medium bg-rose-500/10 border border-rose-500/20 text-rose-400";
+                feedback.className = "p-4 rounded-2xl text-xs font-bold bg-rose-500/10 border border-rose-500/20 text-rose-455";
                 feedback.innerText = 'Gagal menghubungi server.';
                 feedback.classList.remove('hidden');
             }

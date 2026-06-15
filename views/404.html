@@ -6,54 +6,61 @@
     <title>404 - Tautan Tidak Ditemukan</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cinzel:wght@500;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        heading: ['Plus Jakarta Sans', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        serif: ['Cinzel', 'serif'],
                     },
                 },
             },
         }
     </script>
     <style>
-        .glass-card {
-            background: rgba(15, 20, 35, 0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #fce0ad 0%, #dfac6c 50%, #c68b45 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .glowing-glow {
-            filter: blur(120px);
-            opacity: 0.6;
+        .gold-border {
+            border: 1px solid rgba(223, 172, 108, 0.15);
+        }
+        .luxury-card {
+            background: linear-gradient(145deg, rgba(20, 24, 38, 0.8) 0%, rgba(10, 12, 20, 0.95) 100%);
+            backdrop-filter: blur(25px);
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+        .glowing-mesh {
+            filter: blur(140px);
+            opacity: 0.45;
         }
     </style>
 </head>
-<body class="bg-[#070913] text-slate-100 min-h-screen flex items-center justify-center p-4 relative overflow-hidden font-sans select-none">
-    <!-- Background Light Effects -->
-    <div class="absolute top-[-20%] left-[-20%] w-[60%] h-[60%] rounded-full bg-gradient-to-br from-indigo-600 to-purple-600/0 glowing-glow pointer-events-none"></div>
-    <div class="absolute bottom-[-20%] right-[-20%] w-[60%] h-[60%] rounded-full bg-gradient-to-br from-cyan-600 to-indigo-600/0 glowing-glow pointer-events-none"></div>
+<body class="bg-[#05060b] text-slate-200 min-h-screen flex items-center justify-center p-4 relative overflow-hidden font-sans select-none">
+    <!-- Luxury Glowing Mesh Background -->
+    <div class="absolute top-[-25%] left-[-20%] w-[65%] h-[65%] rounded-full bg-gradient-to-br from-[#dfac6c]/20 to-transparent glowing-mesh pointer-events-none"></div>
+    <div class="absolute bottom-[-25%] right-[-20%] w-[65%] h-[65%] rounded-full bg-gradient-to-br from-[#c68b45]/15 to-transparent glowing-mesh pointer-events-none"></div>
 
-    <div class="glass-card w-full max-w-md rounded-3xl p-8 md:p-10 text-center transition-all duration-300 relative z-10 hover:border-slate-700/40">
-        <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-red-500/10 border border-red-500/20 text-red-500 mb-6 shadow-lg shadow-red-500/5">
+    <div class="luxury-card w-full max-w-md rounded-[32px] p-8 md:p-11 text-center transition-all duration-500 relative z-10 gold-border">
+        <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-[#dfac6c]/10 border border-[#dfac6c]/25 text-[#dfac6c] mb-6 shadow-xl">
             <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
             </svg>
         </div>
-        <h1 class="text-4xl font-extrabold font-heading text-white bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+        <h1 class="text-4xl font-extrabold font-serif tracking-widest gold-gradient-text uppercase">
             404
         </h1>
-        <h2 class="text-xl font-bold text-slate-200 mt-2">Tautan Tidak Aktif</h2>
-        <p class="text-sm text-slate-400 mt-3 mb-8 leading-relaxed">
-            Maaf, tautan pendek yang Anda tuju salah, telah kadaluwarsa, atau tidak terdaftar di sistem kami.
+        <h2 class="text-lg font-bold text-slate-200 mt-2 tracking-wide">Tautan Tidak Aktif</h2>
+        <p class="text-sm text-slate-400 mt-4 mb-8 leading-relaxed font-medium">
+            Maaf, tautan pendek yang Anda tuju salah, telah kedaluwarsa, atau tidak terdaftar di sistem kami.
         </p>
 
         <a href="/" 
-            class="inline-block w-full py-4 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold rounded-2xl shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/35 transition-all duration-300 hover:scale-[1.01] active:scale-[0.99] outline-none">
+            class="inline-block w-full py-4.5 bg-gradient-to-r from-[#dfac6c] via-[#b68246] to-[#8a5d29] hover:brightness-110 active:brightness-95 text-slate-950 font-bold rounded-2xl shadow-xl shadow-amber-500/5 transition-all duration-300 hover:scale-[1.01] active:scale-[0.99] outline-none text-xs tracking-widest uppercase">
             Kembali ke Beranda
         </a>
     </div>
